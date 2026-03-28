@@ -1,21 +1,46 @@
-import React from 'react';
+import React, { use } from 'react';
 import { FaFacebook } from 'react-icons/fa';
-import { Link } from 'react-router';
+import { Link, useLocation, useNavigate } from 'react-router';
+import { AuthContext } from '../Provider/AuthProvider';
 
 const LoginPage = () => {
+    const { LogIn } = use(AuthContext)
+    const location = useLocation();
+    const navigate = useNavigate()
+    const handleEmailLogin = (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const email = form.email.value;
+        const password = form.password.value;
+        console.log({ email, password });
+        LogIn(email, password)
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                console.log(user);
+                navigate(`${location.state ? location.state : "/"}`)
+                // ...
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode);
+                alert(errorMessage)
+            });
+
+    }
     return (
         <div className="min-h-[80vh] flex flex-col items-center justify-center">
             <div className="w-full max-w-[545px] border border-gray-300 rounded-lg p-12 bg-white">
                 <h1 className="text-4xl mb-8">Login</h1>
 
-                <form className="space-y-6">
-                    {/* onSubmit={handleEmailLogin} */}
+                <form onSubmit={handleEmailLogin} className="space-y-6">
+
                     <div>
                         <label className="block text-sm mb-2">Username or Email</label>
                         <input
                             type="email"
-                            //   value={email}
-                            //   onChange={(e) => setEmail(e.target.value)}
+                            name="email"
                             className="w-full rounded-xl px-4 py-3 border-b border-gray-300 focus:outline-none focus:border-[#F9A51A]"
                             required
                         />
@@ -25,8 +50,7 @@ const LoginPage = () => {
                         <label className="block text-sm mb-2">Password</label>
                         <input
                             type="password"
-                            //   value={password}
-                            //   onChange={(e) => setPassword(e.target.value)}
+                            name="password"
                             className="w-full rounded-xl px-4 py-3 border-b border-gray-300 focus:outline-none focus:border-[#F9A51A]"
                             required
                         />
@@ -49,7 +73,6 @@ const LoginPage = () => {
 
                     <button
                         type="submit"
-                        // disabled={loading}
                         className="w-full rounded-xl text-lg bg-[#F9A51A] py-3  hover:bg-[#e69410] transition-colors disabled:opacity-50"
                     >
                         Login
@@ -59,7 +82,7 @@ const LoginPage = () => {
                     <p className="text-center text-sm">
                         Don't have an account?{' '}
                         <Link to="/auth/register"
-                           
+
                             //   onClick={onSwitchToRegister}
                             className="text-[#F9A51A] hover:underline"
                         >

@@ -1,9 +1,16 @@
 import { Map, Search } from 'lucide';
-import React from 'react';
+import React, { use } from 'react';
 import travelIcon from "../assets/logo.png"
 import { Link } from 'react-router';
 import { FaSearch } from 'react-icons/fa';
+import { AuthContext } from '../Provider/AuthProvider';
 const Navbar = () => {
+    const { user, Logout } = use(AuthContext)
+    const handelLogOut = () => {
+        // console.log('user trying to logout');
+        Logout()
+
+    }
     return (
         <div className="flex items-center justify-evenly w-11/12 mx-auto mt-5">
             <Link to="/">
@@ -26,9 +33,14 @@ const Navbar = () => {
                 <Link className="text-gray-400 text-sm hover:text-yellow-400 transition-colors">Contact</Link>
                 <Link className="text-gray-400 text-sm hover:text-yellow-400 transition-colors">News</Link>
 
-                <Link to="/auth/login" className="px-6 py-2 bg-yellow-500 text-gray-900 text-sm font-semibold rounded hover:bg-yellow-400 transition-colors">
-                    Login
-                </Link>
+                {
+
+                    user ? (<button onClick={handelLogOut} className="px-6 py-2 cursor-pointer bg-yellow-500 text-gray-900 text-sm font-semibold rounded hover:bg-yellow-400 transition-colors">
+                        LogOut
+                    </button>) : (<Link to="/auth/login" className="px-6 py-2 bg-yellow-500 text-gray-900 text-sm font-semibold rounded hover:bg-yellow-400 transition-colors">
+                        Login
+                    </Link>)
+                }
 
 
             </div>

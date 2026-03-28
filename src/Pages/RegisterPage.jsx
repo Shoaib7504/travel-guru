@@ -1,90 +1,93 @@
 import React from 'react';
+import { use } from 'react';
 import { FaFacebook } from 'react-icons/fa';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import { AuthContext } from '../Provider/AuthProvider';
 
 const RegisterPage = () => {
+    const navigate = useNavigate();
+    const { createUser, setUser } = use(AuthContext)
+    const handelRegister = (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const name = form.name.value;
+        const email = form.email.value;
+        const password = form.password.value;
+        console.log({ name, email, password });
+        createUser(email, password)
+            .then((userCredential) => {
+                // Signed up 
+                const user = userCredential.user;
+                console.log(user);
+                setUser(user)
+                   navigate("/")
+
+            })
+            .catch((error) => {
+                // const errorCode = error.code;
+                const errorMessage = error.message;
+                alert(errorMessage)
+            });
+
+    }
     return (
         <div className="min-h-[80vh] flex flex-col items-center justify-center py-12">
             <div className="w-full max-w-132.5 border border-gray-300 rounded-lg p-12 bg-white">
                 <h1 className="text-3xl mb-8">Create an account</h1>
 
-                <form  className="space-y-6">
-                    {/* onSubmit={handleRegister} */}
-                    <div>
-                        <label className="block text-sm ">First Name</label>
-                        <input
-                            type="text"
-                            // value={firstName}
-                            // onChange={(e) => setFirstName(e.target.value)}
-                            className="w-full px-4 py-3 border-b border-gray-300 focus:outline-none focus:border-[#F9A51A]"
-                            required
-                        />
-                    </div>
+                <form onSubmit={handelRegister} className="space-y-10">
+                    <fieldset className='fieldset space-y-5'>
+                        <div>
+                            <label className="block text-sm ">First Name</label>
+                            <input
+                                type="text"
+                                name='name'
+                                className="w-full rounded-xl px-4 py-3 border-b border-gray-300 focus:outline-none focus:border-[#F9A51A]"
+                                required
+                            />
+                        </div>
 
-                    <div>
-                        <label className="block text-sm">Last Name</label>
-                        <input
-                            type="text"
-                            // value={lastName}
-                            // onChange={(e) => setLastName(e.target.value)}
-                            className="w-full px-4 py-3 border-b border-gray-300 focus:outline-none focus:border-[#F9A51A]"
-                            required
-                        />
-                    </div>
 
-                    <div>
-                        <label className="block text-sm">Username or Email</label>
-                        <input
-                            type="email"
-                            // value={email}
-                            // onChange={(e) => setEmail(e.target.value)}
-                            className="w-full rounded-xl px-4 py-3 border-b border-gray-300 focus:outline-none focus:border-[#F9A51A]"
-                            required
-                        />
-                    </div>
+                        <div>
+                            <label className="block text-sm">Username or Email</label>
+                            <input
+                                type="email"
+                                name="email"
+                                className="w-full rounded-xl px-4 py-3 border-b border-gray-300 focus:outline-none focus:border-[#F9A51A]"
+                                required
+                            />
+                        </div>
 
-                    <div>
-                        <label className="block text-sm ">Password</label>
-                        <input
-                            type="password"
-                            // value={password}
-                            // onChange={(e) => setPassword(e.target.value)}
-                            className="w-full rounded-xl px-4 py-3 border-b border-gray-300 focus:outline-none focus:border-[#F9A51A]"
-                            required
-                            minLength={6}
-                        />
-                    </div>
+                        <div>
+                            <label className="block text-sm ">Password</label>
+                            <input
+                                type="password"
+                                name="password"
+                                className="w-full rounded-xl px-4 py-3 border-b border-gray-300 focus:outline-none focus:border-[#F9A51A]"
+                                required
+                                minLength={6}
+                            />
+                        </div>
 
-                    <div>
-                        <label className="block text-sm mb-2">Confirm Password</label>
-                        <input
-                            type="password"
-                            // value={confirmPassword}
-                            // onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="w-full rounded-xl px-4 py-3 border-b border-gray-300 focus:outline-none focus:border-[#F9A51A]"
-                            required
-                            minLength={6}
-                        />
-                    </div>
 
-                    <button
-                        type="submit"
-                        // disabled={loading}
-                        className="w-full bg-[#F9A51A] py-3 rounded hover:bg-[#e69410] transition-colors disabled:opacity-50"
-                    >
-                        {/* {loading ? 'Creating account...' : 'Create an account'} */}
-                    </button>
-
-                    <p className="text-center text-sm">
-                        Already have an account?{' '}
-                        <Link to="/auth/login"
-                        
-                            
-                            className="text-[#F9A51A] hover:underline"
+                        <button
+                            type="submit"
+                            className="w-full text-lg bg-[#F9A51A] py-3 rounded hover:bg-[#e69410] transition-colors disabled:opacity-50"
                         >
-                            Login
-                        </Link>
-                    </p>
+                            Create an account
+                        </button>
+
+                        <p className="text-center text-sm">
+                            Already have an account?{' '}
+                            <Link to="/auth/login"
+
+
+                                className="text-[#F9A51A] hover:underline"
+                            >
+                                Login
+                            </Link>
+                        </p>
+                    </fieldset>
                 </form>
             </div>
 
