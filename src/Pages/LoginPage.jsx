@@ -31,7 +31,7 @@ const LoginPage = () => {
     }
     return (
         <div className="min-h-[80vh] flex flex-col items-center justify-center">
-            <div className="w-full max-w-[545px] border border-gray-300 rounded-lg p-12 bg-white">
+            <div className="w-full max-w-136.25 border border-gray-300 rounded-lg p-12 bg-white">
                 <h1 className="text-4xl mb-8">Login</h1>
 
                 <form onSubmit={handleEmailLogin} className="space-y-6">
