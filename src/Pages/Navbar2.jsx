@@ -1,23 +1,13 @@
-import { Map, Search } from 'lucide';
 import React from 'react';
 import travelIcon from "../assets/logo.png"
 import { Link } from 'react-router';
-import { FaSearch } from 'react-icons/fa';
-const Navbar = () => {
+const Navbar2 = () => {
     return (
-        <div className="flex items-center justify-evenly w-11/12 mx-auto mt-5">
+        <div className="flex items-center justify-evenly gap-56 w-11/12 mx-auto mt-5">
             <Link to="/">
-                <img className='w-45 h-15 invert' src={travelIcon} alt="" />
+                <img className='w-30.25 h-14 ' src={travelIcon} alt="" />
             </Link>
 
-
-            <div className="relative">
-                <input type="search"
-                    placeholder="Search your Destination..."
-                    className="pl-10 pr-4 py-2 bg-transparent text-white text-sm rounded-md border border-gray-700 w-92.5"
-                    name="" id="" />
-                <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            </div>
 
             <div className="flex items-center gap-10">
 
@@ -37,8 +27,7 @@ const Navbar = () => {
 
 
         </div>
-
     );
 };
 
-export default Navbar;
+export default Navbar2;
