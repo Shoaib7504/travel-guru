@@ -24,7 +24,7 @@ const Navbar2 = () => {
                 <Link className="text-gray-400 text-sm hover:text-yellow-400 transition-colors">Blog</Link>
                 <Link className="text-gray-400 text-sm hover:text-yellow-400 transition-colors">Contact</Link>
                 <Link className="text-gray-400 text-sm hover:text-yellow-400 transition-colors">News</Link>
-
+                <Link className='text-gray-200 font-semibold text-lg'>{user ? (user.displayName) || "Showaib" : ''}</Link>
 
 
                 {

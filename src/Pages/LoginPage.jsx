@@ -2,9 +2,10 @@ import React, { use } from 'react';
 import { FaFacebook } from 'react-icons/fa';
 import { Link, useLocation, useNavigate } from 'react-router';
 import { AuthContext } from '../Provider/AuthProvider';
-
+import google from '../assets/google.png'
+import { GoogleAuthProvider } from 'firebase/auth';
 const LoginPage = () => {
-    const { LogIn } = use(AuthContext)
+    const { LogIn, LoginWithGoogle, setUser } = use(AuthContext)
     const location = useLocation();
     const navigate = useNavigate()
     const handleEmailLogin = (e) => {
@@ -28,6 +29,32 @@ const LoginPage = () => {
                 alert(errorMessage)
             });
 
+    }
+
+    const handleGoogleLogin = () => {
+        LoginWithGoogle()
+            .then((result) => {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                console.log(token);
+
+                const user = result.user;
+                setUser(user)
+                navigate("/")
+
+            }).catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.customData.email;
+                // The AuthCredential type that was used.
+                const credential = GoogleAuthProvider.credentialFromError(error);
+                // ...
+                console.log({ errorCode, errorMessage, email, credential });
+
+            });
     }
     return (
         <div className="min-h-[80vh] flex flex-col items-center justify-center">
@@ -115,16 +142,11 @@ const LoginPage = () => {
                     </button>
 
                     <button
-                        // onClick={handleGoogleLogin}
-                        // disabled={loading}
+                        onClick={handleGoogleLogin}
+
                         className="w-full flex items-center justify-center gap-3 px-6 py-3 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors disabled:opacity-50"
                     >
-                        <svg className="w-8 h-8" viewBox="0 0 48 48">
-                            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
-                            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
-                            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
-                            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
-                        </svg>
+                        <img className='w-8 h-8' src={google} alt="" />
                         <span>Continue with Google</span>
                     </button>
                 </div>

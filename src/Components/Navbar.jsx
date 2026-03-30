@@ -32,11 +32,11 @@ const Navbar = () => {
                 <Link className="text-gray-400 text-sm hover:text-yellow-400 transition-colors">Blog</Link>
                 <Link className="text-gray-400 text-sm hover:text-yellow-400 transition-colors">Contact</Link>
                 <Link className="text-gray-400 text-sm hover:text-yellow-400 transition-colors">News</Link>
-
+                <Link className='text-gray-200 font-semibold text-lg'>{user ? (user.displayName)||"Showaib" : ''}</Link>
                 {
 
                     user ? (<button onClick={handelLogOut} className="px-6 py-2 cursor-pointer bg-yellow-500 text-gray-900 text-sm font-semibold rounded hover:bg-yellow-400 transition-colors">
-                        LogOut
+                        Logout
                     </button>) : (<Link to="/auth/login" className="px-6 py-2 bg-yellow-500 text-gray-900 text-sm font-semibold rounded hover:bg-yellow-400 transition-colors">
                         Login
                     </Link>)

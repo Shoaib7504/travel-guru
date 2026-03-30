@@ -3,10 +3,11 @@ import { use } from 'react';
 import { FaFacebook } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router';
 import { AuthContext } from '../Provider/AuthProvider';
+import { GoogleAuthProvider } from 'firebase/auth';
 
 const RegisterPage = () => {
     const navigate = useNavigate();
-    const { createUser, setUser } = use(AuthContext)
+    const { createUser, setUser, LoginWithGoogle } = use(AuthContext)
     const handelRegister = (e) => {
         e.preventDefault();
         const form = e.target;
@@ -18,9 +19,9 @@ const RegisterPage = () => {
             .then((userCredential) => {
                 // Signed up 
                 const user = userCredential.user;
-                console.log(user);
+                // console.log(user);
                 setUser(user)
-                   navigate("/")
+                navigate("/")
 
             })
             .catch((error) => {
@@ -29,6 +30,35 @@ const RegisterPage = () => {
                 alert(errorMessage)
             });
 
+    }
+
+    // SingIn With Google Account
+
+
+    const handleGoogleSignup = () => {
+        LoginWithGoogle()
+            .then((result) => {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                console.log(token);
+
+                const user = result.user;
+                setUser(user)
+                navigate("/")
+
+            }).catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.customData.email;
+                // The AuthCredential type that was used.
+                const credential = GoogleAuthProvider.credentialFromError(error);
+                // ...
+                console.log({ errorCode, errorMessage, email, credential });
+
+            });
     }
     return (
         <div className="min-h-[80vh] flex flex-col items-center justify-center py-12">
@@ -114,7 +144,7 @@ const RegisterPage = () => {
                     </button>
 
                     <button
-                        // onClick={handleGoogleSignup}
+                        onClick={handleGoogleSignup}
                         // disabled={loading}
                         className="w-full flex items-center justify-center gap-3 px-6 py-3 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors disabled:opacity-50"
                     >
